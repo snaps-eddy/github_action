@@ -32,35 +32,19 @@ jobs:
       with:
         name: app-release-unsigned.apk
         path: app/build/outputs/apk/release/app-release-unsigned.apk
-       
-    - name: Upload to slack step
-      uses: adrey/slack-file-upload-action@master
-      with:
-        token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
-        channel: TestApp
-
-#      steps:
-#     ##########  UPLOAD APK TO SLACK #CHANNEL ##########
-#     # SLACK_CHANNEL - Dev - upload apk file.
-#     - step: &SlackChannelUploadDevAPK
-#         name: Slack Channel Publish Dev APK
-#         script:
-#           - curl -F content="---Dev server build, uploaded by bitbucket pipelines---" -F file=@"./appMobile/build/outputs/apk/dev/release/$FILE_NAME_DEV" -F channels=${SLACK_CHANNEL} -F token=${SLACK_TOKEN} https://slack.com/api/files.upload
-#     # SLACK_CHANNEL - Staging - upload apk file.
-#     - step: &SlackChannelUploadStagingAPK
-#         name: Slack Channel Publish Staging APK
-#         script:
-#           - curl -F content="---Staging server build, uploaded by bitbucket pipelines---" -F file=@"./appMobile/build/outputs/apk/staging/release/$FILE_NAME_STAGING" -F channels=${SLACK_CHANNEL} -F token=${SLACK_TOKEN} https://slack.com/api/files.upload
-#     # SLACK_CHANNEL - Production - upload apk file.
-#     - step: &SlackChannelUploadProductionAPK
-#         name: Slack Channel Publish Production APK
-#         script:
-#           - curl -F content="---Production server build, uploaded by bitbucket pipelines---" -F file=@"./appMobile/build/outputs/apk/production/release/$FILE_NAME_PRODUCTION" -F channels=${SLACK_CHANNEL} -F token=${SLACK_TOKEN} https://slack.com/api/files.upload  
         
-#     - name: Build APK
-#       run:
-#        name: Upload to Slack
-#         command: |
-#         curl -F file=@android/app/build/outputs/apk/release/app-release-unsigned.apk -F channels=TestApp -F token=${{ secrets.SLACK_READ_WRITE_TOKEN }} -F title="Here is new TIA relase build apk file"  https://slack.com/api/files.upload
+    - name: Upload apk to slack
+      env:
+        SLACK_TOKEN: ${{secrets.SLACK_READ_WRITE_TOKEN}}
+        SLACK_CHANNEL: TestApp
+      run: curl -H "Authorization:$SLACK_TOKEN" -F "channels=$SLACK_CHANNEL" -F "filename=app-debug.apk" -F "file=@app/build/outputs/apk/release/app-release-unsigned.apk" -F "initial_comment=QA앱 배포" https://slack.com/api/files.upload   
+       
+#     - name: Upload to slack step
+#       uses: adrey/slack-file-upload-action@master
+#       with:
+#         token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+#         path: app/build/outputs/apk/release/app-release-unsigned.apk
+#         channel: TestApp
+        
+        
 
