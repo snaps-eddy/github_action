@@ -24,8 +24,22 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload APK
-      uses: actions/upload-artifact@v2
+#     - name: Upload APK
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: app-debug.apk
+#         path: app/build/outputs/apk/debug/app-debug.apk
+        
+#     - name: Build APK
+#       run: bash ./gradlew assembleRelease --stacktrace
+     
+     
+#     - run: './gradlew assembleRelease'
+    - uses: MeilCli/slack-upload-file@v1
       with:
-        name: app-debug.apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        slack_token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
+        channels: ${{ secrets.SLACK_CHANNEL_DEPLOY }}
+        file_path: 'app/build/outputs/apk/release/app-release-unsigned.apk'
+        file_name: 'app-release-unsigned.apk'
+        file_type: 'apk'
+        initial_comment: '${{ github.ref }} 테스트 앱 슬랙 배포 성공'
