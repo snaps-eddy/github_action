@@ -25,12 +25,12 @@ jobs:
       run: bash ./gradlew assembleDebug
  
     - name: change file name
-      run: mv app/build/outputs/apk/dev/debug/app-dev-debug.apk app/build/outputs/apk/dev/debug/230948.apk
+      run: mv app/build/outputs/apk/dev/debug/app-debug.apk app/build/outputs/apk/dev/debug/230948.apk
     - name: Upload APK
       uses: actions/upload-artifact@v2
       with:
         name: upload apk
-        path: app/build/outputs/apk/dev/debug/1235151.apk
+        path: app/build/outputs/apk/dev/debug/230948.apk
     - name: Slack Notification
       uses: rtCamp/action-slack-notify@master
       env:
