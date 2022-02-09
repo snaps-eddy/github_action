@@ -22,7 +22,7 @@ jobs:
         cache: gradle
         
     - name: Build with Gradle
-      run: bash ./gradlew assembleDevDebug
+      run: bash ./gradlew assembleDebug
  
     - name: change file name
       run: mv app/build/outputs/apk/dev/debug/app-dev-debug.apk app/build/outputs/apk/dev/debug/230948.apk
