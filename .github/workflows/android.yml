@@ -36,7 +36,7 @@ jobs:
     - name: Upload apk to slack
       env:
         SLACK_TOKEN: ${{secrets.SLACK_READ_WRITE_TOKEN}}
-        SLACK_CHANNEL: TestApp
+        SLACK_CHANNEL: eddy-github
       run: curl -H "Authorization:$SLACK_TOKEN" -F "channels=$SLACK_CHANNEL" -F "filename=app-debug.apk" -F "file=@app/build/outputs/apk/release/app-release-unsigned.apk" -F "initial_comment=QA앱 배포" https://slack.com/api/files.upload   
        
 #     - name: Upload to slack step
