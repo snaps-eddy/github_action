@@ -44,10 +44,12 @@ jobs:
       env:
          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}  
          
-    - name: Upload to slack step
-      uses: adrey/slack-file-upload-action@master
+    - name: Send custom JSON data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
       with:
-        token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
-        channel: TestApp
+        payload-file-path: "app/build/outputs/apk/release/app-release-unsigned.apk"
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
         
