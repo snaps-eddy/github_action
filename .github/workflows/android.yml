@@ -49,5 +49,5 @@ jobs:
       with:
         token: ${{ secrets.SLACK_READ_WRITE_TOKEN }}
         path: app/build/outputs/apk/release/app-release-unsigned.apk
-        channel: ${{ secrets.SLACK_CHANNEL_DEPOLY }}
+        channel: TestApp
         
