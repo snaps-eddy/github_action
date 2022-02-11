@@ -23,21 +23,40 @@ jobs:
       id: date
       run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
      
-     
-    - name: Build APK
-      run: bash ./gradlew assembleRelease --stacktrace
-           
-    - name: 테스트용 apk artifact 업로드
-      uses: actions/upload-artifact@v2
-      with:
-        name: app-release-unsigned.apk
-        path: app/build/outputs/apk/release/app-release-unsigned.apk
-        
-    - name: Upload apk to slack
+    - name: Slack Notification Finish With Success
+      uses: rtCamp/action-slack-notify@v2
+      if: success()
       env:
-        SLACK_TOKEN: ${{secrets.SLACK_READ_WRITE_TOKEN}}
-        SLACK_CHANNEL: eddy-github
-      run: curl https://slack.com/api/files.upload -F token=$SLACK_TOKEN -F channels=$SLACK_CHANNEL -F file=@app/build/outputs/apk/release/app-release-unsigned.apk  
+        SLACK_ICON_EMOJI: ":bell:"
+        SLACK_TITLE: ":bell: 빌드 성공"
+        SLACK_USERNAME: "ssm-mobile-builder-bot"
+        SLACK_COLOR: "#00BFA5"
+        SLACK_MESSAGE: ${{github.event.pull_request.user.login}} opened a PR "${{github.event.pull_request.title}}" on branch "${{github.event.pull_request.head.ref}}"
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+    - name: Slack Notification Finish With Fail
+      uses: rtCamp/action-slack-notify@v2
+      if: failure()
+      env:
+        SLACK_ICON_EMOJI: ":boom:"
+        SLACK_TITLE: ":boom: 빌드 실패"
+        SLACK_MESSAGE: ${{github.event.pull_request.user.login}} opened a PR "${{github.event.pull_request.title}}" on branch "${{github.event.pull_request.head.ref}}"
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }} 
+        
+#     - name: Build APK
+#       run: bash ./gradlew assembleRelease --stacktrace
+           
+#     - name: 테스트용 apk artifact 업로드
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: app-release-unsigned.apk
+#         path: app/build/outputs/apk/release/app-release-unsigned.apk
+        
+#     - name: Upload apk to slack
+#       env:
+#         SLACK_TOKEN: ${{secrets.SLACK_READ_WRITE_TOKEN}}
+#         SLACK_CHANNEL: eddy-github
+#       run: curl https://slack.com/api/files.upload -F token=$SLACK_TOKEN -F channels=$SLACK_CHANNEL -F file=@app/build/outputs/apk/release/app-release-unsigned.apk  
        
        
 #     - name: Upload to slack step
